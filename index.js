@@ -1,12 +1,7 @@
 const express = require('express');
 const app = express();
 const ytdl = require("ytdl-core");
-const ffmpeg = require('fluent-ffmpeg');
-const {PassThrough} = require('stream');
-const {spawn} = require('child_process');
 var cookieParser = require('cookie-parser');
-const e = require('express');
-const fs = require('fs');
 
 app.use(cookieParser())
 
