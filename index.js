@@ -41,19 +41,20 @@ app.get("/", async(req, res)=>{
   })
 
   const Audio = GetAudioFile.forEach(function(item, index){
-    AudioListItem.push({url:item.url, quality:item.quality, mimeType:item.mimeType, contentLength:Math.ceil(parseInt(item.contentLength)/1048576)});
+    AudioListItem.push({url:item.url, quality:item.quality,message:"I am Audio", mimeType:item.mimeType, contentLength:Math.ceil(parseInt(item.contentLength)/1048576)});
   })
 
   res.cookie('VideoListItem', VideoListItem[0].url, {maxAge: 900000, httpOnly: true});
   res.cookie('AudioListItem', AudioListItem[0].url, {maxAge: 900000, httpOnly: true});
 
   const video = req.cookies.VideoListItem;
-  console.log(video);
+
+  const AudioListItem1 = AudioListItem[0];
 
   return res.status(200).json({
       success:true,
       VideoListItem,
-      AudioListItem,
+      AudioListItem1,
     })
 
   } catch (error) {
