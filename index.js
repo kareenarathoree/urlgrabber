@@ -24,7 +24,19 @@ app.get("/", async(req, res)=>{
    const GetAudioFile = await getUrl.player_response.streamingData.adaptiveFormats.filter(obj => audioFileRegex.test(obj.mimeType) == true );
    const GetVideoFile = await getUrl.player_response.streamingData.adaptiveFormats.filter(obj => videoFileRegex.test(obj.mimeType) == true );
 
-  const Video = GetVideoFile.forEach(function(item, index){
+
+  const filterVideo = await GetVideoFile.filter(ytData => {
+    const quality = ytData.qualityLabel;
+    return quality === '360p' || quality === '720p' || quality === '1080p';
+  });
+
+  
+  const uniqueVideo = Array.from(new Set(filterVideo.map(video => video.qualityLabel))).map(quality => {
+    return filterVideo.find(video => video.qualityLabel === quality);
+  });
+
+
+  const Video = uniqueVideo.forEach(function(item, index){
     VideoListItem.push({url:item.url, quality:item.qualityLabel, mimeType:item.mimeType, contentLength:Math.ceil(parseInt(item.contentLength)/1048576)});           
   })
 
@@ -40,8 +52,8 @@ app.get("/", async(req, res)=>{
 
   return res.status(200).json({
       success:true,
-      AudioListItem,
       VideoListItem,
+      AudioListItem,
     })
 
   } catch (error) {
